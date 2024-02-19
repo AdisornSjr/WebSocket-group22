@@ -13,18 +13,22 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
     private final SimpMessageSendingOperations messageSendingOperations;
-
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
+        ChatMessage.updateCount(-1);
+        int count = ChatMessage.getUserCount();
         if (username != null) {
             var chatMessage = ChatMessage.builder()
                     .type(MessageType.LEAVE)
                     .sender(username)
+                    .count(count)
                     .build();
-
             messageSendingOperations.convertAndSend("/topic/public", chatMessage);
+            System.out.println(chatMessage.getCount());
         }
+
     }
+
 }
