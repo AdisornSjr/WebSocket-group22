@@ -15,9 +15,10 @@ public class ChatMessage {
     private static int userCount = 0;
     private int count;
 
-    public static void updateCount(int count){
-       userCount += count;
+    public void UserJoin(){
+       userCount++;
     }
+    public static void UserLeave(){userCount--;}
     public void setCount(){
         count = userCount;
     }

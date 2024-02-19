@@ -21,7 +21,8 @@ public class chatController {
     @SendTo("/topic/public")
     public ChatMessage addUser(ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        chatMessage.updateCount(1); //why it suggest
+//        chatMessage.updateCount(1); //why it suggest
+        chatMessage.UserJoin();
         chatMessage.setCount();
         System.out.println(chatMessage.getCount());
         return chatMessage;
